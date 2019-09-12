@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <link rel="stylesheet" href="style.css">
+            <style>
+                p {
+                    vertical-align: text-bottom;
+                }
+                
+                .Picture {
+                    position: absolute;
+                    top: 30%;
+                    left: 30%;
+                }
+                
+                #Man {
+                    position: absolute;
+                    left: 31%;
+                    top: 30%;
+                    color: white;
+                    font-weight: 900;
+                    font-size: 22px;
+                    
+                    
+                }
+                
+                
+                .Error {
+                    position: absolute;
+                    font-size: 20px;
+                    font-family: Times serif;
+                    top: 70%;
+                    left: 30%;
+                }
+                table{
+                    width: 100%;
+                    height: 100%;
+                    border-collapse: collapse;
+                }
+                #Up {
+                    width: 100%;
+                    height: 100px;
+                    background-color: Mediumblue;
+                    text-align: center;
+                    color: white;
+                    font-family: Markel Felt;
+                    font-size: 20px;
+                    font-stretch: extra-condensed;
+                    border-radius: 40px;
+                }
+                
+                #Result {
+                    width: 30%;
+                    margin: auto;
+                    
+                }
+                
+                .Returning{
+                    position: absolute;
+                    bottom: 5%;
+                }
+                
+                
+                
+                .Help{
+                      margin: 0;
+                        padding: 0;
+                        font-family: verdana;
+                    }
+                .center {
+    
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+    
+                        }
+                        
+
+                ul {
+    
+                    padding: 0;
+                    margin:  0;
+                    display: flex;
+                }
+
+                ul li {
+        
+                    list-style: none;
+                    color: red;
+                    font-size: 4em;
+                    font-weight: bold;
+                    letter-spacing: 5px;
+                    filter: blur(1px);
+                }
+
+                ul:hover li {
+        
+                animation: animate 2s linear forwards;
+                }
+
+                @keyframes animate {
+                0%{
+            transform: rotate(0deg) translateY(0px);
+            opacity: 1;
+            filter: blur(1px);
+        }
+    
+        100%{
+            transform: rotate(45deg) translateY(-200px);
+            opacity: 0;
+            filter: blur(20px);
+        }
+    }
+
+ul li:nth-child(1){
+    animation-delay: 0s;
+}
+
+ul li:nth-child(2){
+    animation-delay: 0.4s;
+}
+
+ul li:nth-child(3){
+    animation-delay: 0.8s;
+}
+
+ul li:nth-child(4){
+    animation-delay: 1.2s;
+}
+
+ul li:nth-child(5){
+    animation-delay: 1.6s;
+}
+
+ul li:nth-child(6){
+    animation-delay: 2s;
+}
+
+                
+                
+            </style>
+            
+        </head>
+        <body>
+            <table>
+                <tr>
+                    <td id="Up" colspan=2>
+                        <p>Вансович Алексей Игоревич</p>
+                        <p>Группа P3202</p>
+                        <p>Вариант 202002</p>
+                    </td>
+                </tr>
+                <tr>
+            <?php
+                session_start();
+                $count = (isset($_SESSION["count"])) ? $_SESSION["count"] : -1;//Счётчик, чтобы таблица не увеличивалась при обновлении.
+                $timeWorking = microtime();
+                $arrayCurrentTime = (isset($_SESSION["CurrentTime"])) ? $_SESSION["CurrentTime"] : array();
+                $arrayTimeWorking = (isset($_SESSION["TimeWorking"])) ? $_SESSION["TimeWorking"] : array();
+                $arrayX = (isset($_SESSION["X"])) ? $_SESSION["X"] : array();
+                $arrayY = (isset($_SESSION["Y"])) ? $_SESSION["Y"] : array();
+                $arrayR = (isset($_SESSION["R"])) ? $_SESSION["R"] : array();
+                $arrayResult = (isset($_SESSION["Result"])) ? $_SESSION["Result"] : array();
+                
+                function KillerWord($text){
+                   $nums = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ,",");
+                   $flag = 0;
+                   $len = strlen($text);
+                   for ($i = 0; $i < $len; $i ++){
+                    for ( $j = 0; $j<11; $j ++){
+                        if ($i==0 && $j==0){
+                            if (($text{$i} == "-" && strlen($text)!= 1) ||  $text{$i}===$nums[$i]){
+                                $flag = 1;
+                            }
+                        }
+                        
+                        if (  $text{$i} === $nums[$j] && $text{0} != ","){
+                            $flag = 1;
+                            break;
+                        }
+                    }
+                    if ($flag == 0){
+                        break;
+                    
+                    }else{
+                        
+                        if ($i != $len-1){
+                        $flag = 0;
+                        }
+                    }
+                }
+                   
+                   if ($flag == 0){
+                        return false;
+                        //Здесб нужен вывод есть посторонний символ
+                   }else{
+                        return true;
+                   }
+                }
+                
+                function CheckRangeR($text){
+                    switch($text){
+                        case "1":
+                            return true;
+                        case "2":
+                            return true;
+                        case "3":
+                            return true;
+                        case "4":
+                            return true;
+                        case "5":
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+                
+                
+                
+                function CheckRangeX($text){
+                    switch ($text){
+                        case "":
+                            return true;
+                        case "-4":
+                            return true;
+                        case "-3":
+                            return true;
+                        case "-2":
+                            return true;
+                        case "-1":
+                            return true;
+                        case "0":
+                            return true;
+                        case "1":
+                            return true;
+                        case "2":
+                            return true;
+                        case "3":
+                            return true;
+                        case "4":
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+                
+                
+                function CheckRange($text){
+                    if ( $text < -3 || $text > 5){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+                    $x = $_GET["X"];
+                    $y = $_GET["Y"];
+                    $R = $_GET["R"];
+                    echo "<br />";
+                    
+                
+                if (!KillerWord($y)){
+                    echo "<tr>";
+                    echo "<p class=\"Help\">";
+                    echo "<div class=\"center\">";
+                    echo "<ul class=\"error\">";
+                    echo "<li>О</li>";
+                    echo "<li>ш</li>";
+                    echo "<li>и</li>";
+                    echo "<li>б</li>";
+                    echo "<li>к</li>";
+                    echo   "<li>а</li>";
+                    echo    "</ul>";
+                    echo    "</div>";
+                    echo "</p>";
+                    echo "<p class=\"Error\">Вы ввели посторонний символ или не ввели ничего. Верные символы: 1,2,3,4,5,6,7,8,9,0,\",\",\"-\"</p>";
+                    echo "</tr>";
+                    echo "<tr>";
+                    echo "<p class=\"Returning\">";
+                    echo "<a href=index.html class=\"butt\">Вернуться на главную страницу</a>";
+                    echo "</p>";
+                    echo "</tr>";
+                }else if (!CheckRangeX($x) || !CheckRangeR($R)){
+                     echo "<p class=\"Picture\"><img src=\"Friend.jpg\" width=\"500\" height=\"350\"</p>";
+                     echo "<p class=\"Returning\"><a href=index.html class=\"butt\">Вернуться на главную страницу<a></div>";
+                }else if (!CheckRange($y)){
+                    echo "<tr>";
+                    echo "<p class=\"Help\">";
+                    echo "<div class=\"center\">";
+                    echo "<ul class=\"error\">";
+                    echo "<li>О</li>";
+                    echo "<li>ш</li>";
+                    echo "<li>и</li>";
+                    echo "<li>б</li>";
+                    echo "<li>к</li>";
+                    echo   "<li>а</li>";
+                    echo    "</ul>";
+                    echo    "</div>";
+                    echo "</p>";
+                    echo "<p class=\"Error\">Неверное значение координаты y. Верный диапозон от -3 до 5</p>";
+                    echo "<p class=\"Returning\">";
+                    echo "<a href=index.html class=\"butt\">Вернуться на главную страницу</a>";
+                    echo "</p>";
+                    echo "</tr>";
+                
+                }else{
+                    if ($x == ""){
+                        echo "<p class=\"Picture\"><img src=\"Man.jpg\" width=\"500\" height=\"350\"</p>";
+                        echo "<p id=\"Man\"> Код не заработает, если не ввести координату x.</p>";
+                        echo "<p class=\"Returning\"><a href=index.html class=\"butt\">Вернуться на главную страницу<a></div>";
+                    }else{
+                        if ($arrayX[$count] == $x && $arrayY[$count] == $y && $arrayR[$count] == $R){
+                            $_SESSION["count"] = $count;
+                            echo "<table id=\"Result\" style=\"align-self: center\"; border=\"3\">";  
+                            for ($i=-1;$i<count($arrayX);$i++){
+                                    echo "<tr>";
+                                    if ($i == -1){
+                                        echo "<td>X</td><td>Y</td><td>R</td><td>Result</td><td>Time</td><td>Current Time</td>";
+                                        echo "</tr>";
+                                    }else{
+                                        echo "<td>$arrayX[$i]</td><td>$arrayY[$i]</td><td>$arrayR[$i]</td><td>$arrayResult[$i]</td><td>$arrayTimeWorking[$i]</td><td>$arrayCurrentTime[$i]</td>";
+                                    }
+                                }
+                                echo "</table>";
+                                echo "<br />";
+                                echo "<div><a href=index.html class=\"butt\">Вернуться на главную страницу<a></div>";
+                        }else{
+                            $arrayX[] = $x;
+                            $arrayY[] = $y;
+                            $arrayR[] = $R;
+                            $count ++;
+                            echo "<table id=\"Result\" style=\"align-self: center\"; border=\"3\">";     
+                            if (($x <=$R && $y <= $R/2 && $x>=0 && $y>=0) || ($x <= 0 && $y <= 0 && $y >= -$x - $R/2) || ($x>=0 && $y <= 0 && $x*$x + $y*$y <= $R*$R)){
+                                $arrayTimeWorking[] = round(microtime() - $timeWorking,6 )*1000;
+                                $arrayResult[] = "Попадение";
+                                $_SESSION["X"] = $arrayX;
+                                $_SESSION["Y"] = $arrayY;
+                                $_SESSION["R"] = $arrayR;
+                                $_SESSION["Result"] = $arrayResult;
+                                $_SESSION["TimeWorking"] = $arrayTimeWorking;
+                                $arrayCurrentTime[] = date("H:i:s",strtotime('+3 hours'));
+                                $_SESSION["CurrentTime"] = $arrayCurrentTime;
+                                $_SESSION["count"] = $count;
+                                for ($i=-1;$i<count($arrayR)+1;$i++){
+                                    echo "<tr>";
+                                    if ($i == -1){
+                                        echo "<td>X</td><td>Y</td><td>R</td><td>Result</td><td>Time</td><td>Current Time</td>";
+                                        echo "</tr>";
+                                    }else{
+                                        echo "<td>$arrayX[$i]</td><td>$arrayY[$i]</td><td>$arrayR[$i]</td><td>$arrayResult[$i]</td><td>$arrayTimeWorking[$i]</td><td>$arrayCurrentTime[$i]</td>";
+                                    }
+                                }
+                                echo "</table>";
+                                echo "<br />";
+                                echo "<div><a href=index.html class=\"butt\">Вернуться на главную страницу<a></div>";
+                            }else{
+                                $arrayResult[] = "Промах";
+                                $_SESSION["X"] = $arrayX;
+                                $_SESSION["Y"] = $arrayY;
+                                $_SESSION["R"] = $arrayR;
+                                $_SESSION["Result"] = $arrayResult;
+                                $arrayTimeWorking[] = round(microtime() - $timeWorking, 6)*1000;
+                                $arrayCurrentTime[] = date("H:i:s", strtotime('+3 hours'));
+                                $_SESSION["CurrentTime"] = $arrayCurrentTime;
+                                $_SESSION["TimeWorking"] = $arrayTimeWorking;
+                                $_SESSION["count"] = $count;
+                                for ($i=-1;$i<count($arrayX);$i++){
+                                    echo "<tr>";
+                                    if ($i == -1){
+                                        echo "<td>X</td><td>Y</td><td>R</td><td>Result</td><td>Time</td><td>Current Time</td>";
+                                        echo "</tr>";
+                                    }else{
+                                        echo "<td>$arrayX[$i]</td><td>$arrayY[$i]</td><td>$arrayR[$i]</td><td>$arrayResult[$i]</td><td>$arrayTimeWorking[$i]</td><td>$arrayCurrentTime[$i]</td>";
+                                    }
+                                }
+                                echo "</table>";
+                                echo "<br />";
+                                echo "<div><a href=index.html class=\"butt\">Вернуться на главную страницу<a></div>";
+                            }
+                            
+                        }
+                    }
+                }
+            ?>
+                
+                </tr>
+            </table>
+        </body>
+    </html>
