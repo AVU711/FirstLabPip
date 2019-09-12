@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Первая Лабораторная работа.</title>
+            <script type="text/javascript">
+                
+                function Init (){
+                    let input = document.getElementById('Button');
+                    input.addEventListener('click',Check, false);
+                }
+                
+                let flagErrorLetter = 0;
+                let flagErrorRange = 0;
+                
+                
+                function Check(evt){
+                    let p = document.getElementById("A");
+                    let error = document.createElement("div");
+                    error.id = "ErrorLetter";
+                    let errorRange = document.createElement("div");
+                    errorRange.id = "ErrorRange";
+                   let y = document.getElementById("coordinateY").value;
+                   let flag = 0;  // Значение 0 -> Не цифра
+                   let num = new String(y);
+                   let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ","];   
+                   for (let i = 0; i<num.length; i ++){
+                    for (let j = 0; j<nums.length; j ++){
+                        if (i == 0 && j == 0){
+                            if ((num.charAt(0) == "-" && num.length != 1)  ||num.charAt(0) == nums[0]){
+                                flag = 1;
+                            }
+                        }else{
+                            if (num.charAt(i) == nums[j] && num.charAt(0) != ","){
+                            flag = 1; // Совпало с массивом
+                            break;
+                            }
+                        }
+                    }
+                    if (flag == 0){
+                        evt.preventDefault();
+                        if (flagErrorLetter == 0){
+                            if (flagErrorRange == 1){
+                                flagErrorRange = 0;
+                                let x = document.getElementById("ErrorRange");
+                                x.remove();
+                            }
+                            flagErrorLetter ++;
+                            error.innerHTML = "Вы ввели посторонние символы или расположение неверно, так нельзя. Верные символы : 0,1,2,3,4,5,6,7,8,9,\",\", \"-\"";
+                            error.style.cssText = "color : Red; font-family : Arial, Helvetica, Verdana, sans-serif ";
+                            p.appendChild(error);
+                        }
+                    }else{
+                        if (i != num.length-1){
+                        flag = 0;
+                        }
+                      }
+                   }
+                if (y>5 || y <-3){
+                        evt.preventDefault();
+                        if (flagErrorRange == 0){
+                            if (flagErrorLetter == 1){
+                            flagErrorLetter = 0;
+                            flagErrorRange ++;
+                            let x = document.getElementById("ErrorLetter");
+                            x.remove();
+                            errorRange.innerHTML = 'Число вышло за рамки положенного, верный диапозон от -3 до 5 включительно';
+                            errorRange.style.cssText = "color : Red; font-family : Arial, Helvetica, Verdana, sans-serif ";
+                            p.appendChild(errorRange);
+                            
+                            }else{
+                            flagErrorRange ++;
+                            errorRange.innerHTML = 'Число вышло за рамки положенного, верный диапозон от -3 до 5 включительно';
+                            errorRange.style.cssText = "color : Red; font-family : Arial, Helvetica, Verdana, sans-serif ";
+                            p.appendChild(errorRange);
+                            }
+                        
+                        }else{
+                            evt.preventDefault();
+                        }
+                    }
+            }
+                
+                
+                
+            </script>
+            <style>
+                table{
+                    width: 100%;
+                    height: 100%;
+                    border-collapse: collapse;
+                }
+                
+                #Button{
+                    border-color: Midnightblue;
+                    width: 150px;
+                    height: 50px;
+                    color: white;
+                    text-align: center;
+                    border-radius: 25px;
+                    background-color: Mediumblue;
+                }
+                #Up {
+                    width: 100%;
+                    height: 100px;
+                    background-color: Mediumblue;
+                    text-align: center;
+                    color: white;
+                    font-family: Markel Felt;
+                    font-size: 20px;
+                    font-stretch: extra-condensed;
+                    border-radius: 40px;
+                }
+                
+                .LeftSide{
+                    text-align: center;
+                    font-size: 15px;
+                    font-family: inherit;
+                }
+                
+                ul {
+                    font-family: sans-serif ;
+                }
+                
+                .RightSide{
+                    width: 70%;
+                    text-align: center;
+                }
+                
+                input:focus {
+                    background-color: lime;
+                
+                }
+
+                input[type="text"] {
+                    padding-left: 5%;
+                    border-color: black;
+                    border-radius: 15px;
+                }
+                
+                form label {
+                    font-family: cursive;
+                    font-size: 15px;
+                    text-align: inherit;
+                }
+                
+            
+                
+
+                
+            </style>
+        </head>
+        <body onload="Init ();">
+            <table  style="align-self: center">
+                <tr>
+                    <td id="Up" colspan=2>
+                        <p>Вансович Алексей Игоревич</p>
+                        <p>Группа P3202</p>
+                        <p>Вариант 202002</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="LeftSide">
+                        <p>Разработать <abbr title="Hypertext Preprocessor">PHP</abbr>-скрипт, определяющий попадание точки на координатной плоскости в заданную область, и создать HTML-страницу, которая формирует данные для отправки их на обработку этому скрипту.</p>
+                        
+                        <p>Параметр R и координаты точки должны передаваться скрипту посредством HTTP-запроса. Скрипт должен выполнять валидацию данных и возвращать HTML-страницу с таблицей, содержащей полученные параметры и результат вычислений - факт попадания или непопадания точки в область.
+                        Кроме того, ответ должен содержать данные о текущем времени и времени работы скрипта.</p>
+                        <p><img src="ITMO.png"></p>
+                    </td>
+                    <td class="RightSide">
+                        <p><p><img src="areas.png"></p></p>
+                        <form action="First.php" method="get">
+                            <label>Координата X</label>
+                            <input type="radio" name="X" value=-4 id="coordinateX">
+                            <label for="coordinateX">-4</label>
+                            <input type="radio" name="X" value=-3 id="coordinateX1">
+                            <label for="coordinateX1">-3</label>
+                            <input type="radio" name="X" value=-2 id="coordinateX2">
+                            <label for="coordinateX2">-2</label>
+                            <input type="radio" name="X" value=-1 id="coordinateX3">
+                            <label for="coordinateX3">-1</label>
+                            <input type="radio" name="X" value=0 id="coordinateX4">
+                            <label for="coordinateX4">0</label>
+                            <input type="radio" name="X" value=1 id="coordinateX5">
+                            <label for="coordinateX5">1</label>
+                            <input type="radio" name="X"  value=2 id="coordinateX6">
+                            <label for="coordinateX6">2</label>
+                            <input type="radio" name="X" value=3 id="coordinateX7">
+                            <label for="coordinateX7">3</label>
+                            <input type="radio" name="X"  value=4 id="coordinateX8">
+                            <label for="coordinateX8">4</label>
+                            <br />
+                            <label>Координата Y</label>
+                            <input type="text" name="Y" id="coordinateY" placeholder="Введите число">
+                            <br />
+                            <label>Параметр R</label>
+                            <select name="R" >
+                                <option disabled="disabled">Выберите значение</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                             <br />
+                             <br />
+                            
+                            <label id="A" for="Button">После введения всех данных, нажмите на кнопку</label>
+                            <br />
+                            <input type="submit" id="Button"  value="Отправить">
+                        </form>
+                    </td>
+                </tr>   
+            </table>
+        </body>
+    </html>
